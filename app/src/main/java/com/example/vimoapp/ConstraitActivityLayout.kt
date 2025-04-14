@@ -30,8 +30,22 @@ import com.example.vimoapp.ui.theme.PurpleGrey40
 import androidx.compose.ui.layout.ContentScale
 import android.R.attr.fontWeight
 import android.view.Surface
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.Send
+import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import java.nio.file.WatchEvent
 
 // this process creates a new activity i.e. an independent android screen
 // on class creation extend componentactivity open class  with empty constructor
@@ -67,6 +81,8 @@ class ConstraitActivityLayout : ComponentActivity(){
 
 @Composable
 fun  InstagramPostCard() {
+    //variable to maintain the like and unlike statements
+    var isLiked= remember {mutableStateOf(false) }
     //create a card element
     Card(shape = RoundedCornerShape(12.dp),
     elevation= CardDefaults.cardElevation(defaultElevation = 6.dp),
@@ -85,6 +101,53 @@ fun  InstagramPostCard() {
 
 
         }
+        // instagram image
+        // box composable :: Box like container
+        Box (modifier = Modifier.fillMaxWidth().height(300.dp)) {
+            Image(painter = painterResource(id = R.drawable.tino9),
+                contentDescription = "post image",
+            modifier = Modifier.fillMaxSize(),
+              contentScale = ContentScale.Crop  )
+
+        }
+        //action button
+        Row (modifier = Modifier.fillMaxWidth().padding(8.dp)){
+            // IconButton :like button
+            IconButton(onClick = {isLiked.value=!isLiked.value}) {
+                Icon(
+                    if (isLiked.value) Icons.Filled.Favorite
+                    else Icons.Outlined.FavoriteBorder,
+                    contentDescription="like Button",
+                    tint = if (isLiked.value) Color.Red
+                    else MaterialTheme.colorScheme.onSurface
+                )
+            }
+            IconButton(onClick = {}) {
+                Icon(Icons.Outlined.CheckCircle, contentDescription = "comment")
+            }
+            IconButton(onClick = {}) {
+                Icon(Icons.Outlined.Share, contentDescription = "share")
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            IconButton(onClick = {}) {
+                Icon(Icons.Outlined.Star, contentDescription = "save")
+            }
+            IconButton(onClick = {}) {
+                Icon(Icons.Outlined.Send, contentDescription = "sent")
+            }
+
+            }
+        Text(text = "${if (isLiked.value)1 else 0} likes",
+            fontWeight= FontWeight.Bold,
+            modifier = Modifier.padding(start = 16.dp, bottom = 4.dp))
+        Row (modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)) {
+            Text(text = "Username", fontWeight= FontWeight.Bold)
+            Text(text = "This is a sample instagram caption!")
+        }
+
+
+
+
     }
 
 
